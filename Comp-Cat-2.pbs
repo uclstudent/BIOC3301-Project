@@ -1,0 +1,22 @@
+#!/bin/bash
+#SBATCH -t 1:00:00
+#SBATCH -n 24
+#SBATCH -p short
+
+#Load modules
+module load eb
+module load Miniconda2
+module load R
+
+# loading virtualenv
+source activate qiime1
+
+# setting temporary directory
+export TMPDIR=~/qiime_tmp
+
+# Compare pH weighted UniFrac adonis
+echo "comparing sample pH using adonis and weighted UniFrac"
+time compare_categories.py --method adonis -i basic_pipeline/cdout/bdiv_even30000/weighted_unifrac_dm.txt -m 2018_02_smb/map.tsv -c SamplePh -o adonis_out -n 999
+
+# deactivating environment
+source deactivate
